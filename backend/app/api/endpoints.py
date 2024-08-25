@@ -9,17 +9,16 @@ router = APIRouter()
 
 
 @router.post("/summarize/")
-async def summarize_youtube_video(youtube_url: str, voice_name: str = "en-US-Wavenet-D"):
-    youtube_url_en_trasciption = 'https://www.youtube.com/watch?v=LUaaGfCCfPE'
+async def summarize_youtube_video(youtube_url: str):
     audio_file_path = "./audio.mp3"
-    video_id = get_video_id(youtube_url_en_trasciption)
+    video_id = get_video_id(youtube_url)
     if not video_id:
         raise HTTPException(status_code=400, detail="Invalid YouTube URL")
 
-    # transcript = fetch_youtube_transcript(video_id)
-    # if not transcript:
-    download_audio_from_youtube(youtube_url_en_trasciption)
-    transcript = audio_to_text(audio_file_path)
+    transcript = fetch_youtube_transcript(video_id)
+    if not transcript:
+        download_audio_from_youtube(youtube_url)
+        transcript = audio_to_text(audio_file_path)
 
     summary = summarize_text(transcript)
     audio_content = text_to_speech(summary)
