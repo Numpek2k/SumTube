@@ -24,4 +24,4 @@ async def summarize_youtube_video(youtube_url: str, voice_name: str = "en-US-Wav
     summary = summarize_text(transcript)
     audio_content = text_to_speech(summary)
 
-    return {"summarize": summary, "transcription": transcript, "audio": audio_content}
+    return {"summarize": summary, "transcription": transcript, "tts_audio_url": audio_content}
